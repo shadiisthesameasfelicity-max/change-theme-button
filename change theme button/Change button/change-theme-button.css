@@ -1,0 +1,494 @@
+@import url('https://unpkg.com/normalize.css') layer(normalize);
+
+@layer normalize, base, demo, glows, transitions, trail;
+
+:root {
+  --font-size: 48px;
+}
+
+@layer trail {
+  :root {
+    --offset: calc(var(--step) * 0.5);
+  }
+  .trail {
+    stroke-dasharray: 10 80;
+    stroke-dashoffset: 10;
+    opacity: 0;
+    transition-property: stroke-dashoffset, opacity;
+    transition-duration: calc(var(--step) * 3), calc(var(--step) * 0.5);
+    transition-delay: var(--offset), calc(var(--offset) + (var(--step) * 2.5));
+    transition-timing-function: var(--ease),
+      linear(0 0%, 0.0039 6.25%, 0.0156 12.5%, 0.0352 18.75%, 0.0625 25%, 0.0977 31.25%, 0.1407 37.5%, 0.1914 43.74%, 0.2499 49.99%, 0.3164 56.25%, 0.3906 62.5%, 0.5625 75%, 0.7656 87.5%, 1 100%);
+  }
+  .toggle[aria-pressed='true'] .trail {
+    transition: stroke-dashoffset 0s;
+    opacity: 1;
+    stroke-dashoffset: -70;
+  }
+  .glow {
+    opacity: 1;
+    transition-property: opacity;
+    transition-duration: 1.25s;
+    transition-delay: var(--offset);
+    transition-timing-function: linear(0 0%, 0.0039 6.25%, 0.0156 12.5%, 0.0352 18.75%, 0.0625 25%, 0.0977 31.25%, 0.1407 37.5%, 0.1914 43.74%, 0.2499 49.99%, 0.3164 56.25%, 0.3906 62.5%, 0.5625 75%, 0.7656 87.5%, 1 100%);
+  }
+  .toggle[aria-pressed='true'] .glow {
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: var(--step);
+    transition-delay: 0s;
+    transition-timing-function: var(--ease);
+  }
+}
+
+@layer glows {
+  .face-plate {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+
+  .face-glowdrop {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+
+  .face-glowdrop::after,
+  .face-glowdrop::before {
+    content: '';
+    height: 50%;
+    aspect-ratio: 1;
+    background: #fff;
+    filter: blur(6px);
+    position: absolute;
+    z-index: -1;
+    border-radius: 50%;
+  }
+
+  .face-glowdrop::before {
+    left: 4%;
+    width: 56%;
+    translate: 0 -25%;
+  }
+
+  .face-glowdrop::after {
+    bottom: 0;
+    right: 12%;
+    width: 34%;
+    translate: 0 20%;
+  }
+
+  .face-glows {
+    position: absolute;
+    inset: -0.075em;
+    opacity: 0;
+    border-radius: inherit;
+    mix-blend-mode: plus-lighter;
+    filter: blur(8px);
+    z-index: 20;
+    mask: conic-gradient(from 280deg, #0000, #fff 20deg 45deg, #0000 95deg),
+          conic-gradient(from 110deg, #0000, #fff 20deg, #0000 95deg);
+  }
+
+  .face-glows div {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    filter: blur(4px);
+    border: 0.1em solid white;
+  }
+}
+
+@layer transitions {
+  :root {
+    --step: 0.5s;
+    --ease: linear(0 0%, 0.2342 12.49%, 0.4374 24.99%, 0.6093 37.49%, 0.6835 43.74%, 0.7499 49.99%, 0.8086 56.25%, 0.8593 62.5%, 0.9023 68.75%, 0.9375 75%, 0.9648 81.25%, 0.9844 87.5%, 0.9961 93.75%, 1 100%);
+  }
+  body {
+    transition-property: background-color, color;
+    transition-duration: var(--step);
+    transition-timing-function: var(--ease);
+  }
+  .socket {
+    transition-property: background-color, box-shadow;
+    transition-duration: var(--step);
+    transition-timing-function: var(--ease);
+  }
+  .face {
+    transition-property: scale;
+    transition-duration: var(--step);
+    transition-timing-function: var(--ease);
+  }
+  .outline {
+    transition-property: stroke;
+    transition-duration: var(--step);
+    transition-timing-function: var(--ease);
+  }
+  .inner-bg {
+    fill: black;
+    transition-property: fill;
+    transition-duration: var(--step);
+    transition-timing-function: var(--ease);
+  }
+
+  .face-shadow::after,
+  .face-shadow::before {
+    transition-property: opacity, translate, filter, scale;
+    transition-duration: var(--step);
+    transition-timing-function: var(--ease);
+  }
+  .face-shadow::after {
+    scale: 0.5;
+  }
+  .face-plate {
+    transition-property: background-color;
+    transition-duration: var(--step);
+    transition-timing-function: var(--ease);
+  }
+  .face-glowdrop {
+    scale: 0;
+    transition-property: scale;
+    transition-duration: var(--step);
+    transition-timing-function: var(--ease);
+  }
+  .socket-shadow,
+  .face-glows,
+  .face-shine {
+    transition-property: opacity;
+    transition-duration: var(--step);
+    transition-timing-function: var(--ease);
+  }
+
+  button:active .socket {
+    box-shadow: -0.045em 0.1em 0.2em -0.15em white;
+  }
+  button:active .face {
+    scale: 0.99;
+  }
+  .glow {
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: var(--step);
+    transition-timing-function: var(--ease);
+  }
+
+  .toggle[aria-pressed='true'] {
+    .face {
+      scale: 1.12;
+    }
+    .outline {
+      stroke: hsl(0 0% 30%);
+    }
+    .inner-bg {
+      fill: hsl(0 0% 20%);
+    }
+    .socket {
+      box-shadow: -0.025em 0.08em 0.2em -0.1em white;
+    }
+    .glow {
+      opacity: 0;
+    }
+    .face-glowdrop {
+      scale: 1;
+    }
+    &::before {
+      scale: 2;
+      opacity: 0;
+    }
+    .face-shadow::before {
+      translate: -15% 55%;
+      filter: blur(1em);
+      opacity: 0.35;
+    }
+    .face-shadow::after {
+      filter: blur(0.5em);
+      scale: 1;
+    }
+    .socket-shadow,
+    .face-glows,
+    .face-shine {
+      opacity: 1;
+    }
+  }
+  .face {
+    scale: 1;
+  }
+}
+
+@layer demo {
+  main {
+    font-size: var(--font-size);
+    scale: 1;
+  }
+  :root {
+    --font-size: 64px;
+    --bg-light: hsl(235 5% 85%);
+    --bg-dark: hsl(220 27% 6%);
+    --button-light: hsl(223 4% 73%);
+    --button-dark: hsl(220 27% 6%);
+  }
+  body {
+    background: light-dark(var(--bg-light), var(--bg-dark));
+    overflow: hidden;
+  }
+  button {
+    background: #0000;
+    font-size: var(--font-size);
+    height: 3em;
+    padding: 0;
+    border-radius: 3em;
+    border: 0;
+    aspect-ratio: 1.8 / 1;
+    position: relative;
+    cursor: pointer;
+  }
+  button :is(.socket, .face) {
+    position: absolute;
+    border-radius: 3em;
+  }
+  .toggle::before {
+    pointer-events: none;
+  }
+  .socket {
+    box-shadow: -0.05em 0.1em 0.2em -0.2em white;
+    background: light-dark(hsl(0 0% 90%), hsl(0 0% 0%));
+    position: relative;
+    inset: 0;
+  }
+  .socket-shadow {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    border-radius: inherit;
+    box-shadow: 0em 0.075em 0.1em 0em white;
+  }
+  .face {
+    inset: 0.15em;
+  }
+
+  .toggle::before {
+    content: '';
+    width: 150vmax;
+    height: 200vmax;
+    aspect-ratio: 1;
+    border-radius: 0%;
+    background: radial-gradient(hsl(0 0% 100% / 0.25), hsl(0 0% 0% / 1) 35%);
+    position: absolute;
+    translate: -50% -65%;
+    left: 50%;
+    top: 50%;
+    z-index: -1;
+    opacity: 0.35;
+  }
+
+  .face-shadow,
+  .face-shadow::after,
+  .face-shadow::before {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+  .face-shadow::after,
+  .face-shadow::before {
+    content: '';
+  }
+  .face-shadow::before {
+    background: black;
+  }
+  .face-shadow::after {
+    background: white;
+  }
+
+  .face-plate {
+    box-shadow: -0.05em 0.1em 0.2em -0.2em white inset;
+    background: conic-gradient(from 45deg, #0000, hsl(0 0% 100% / 0.05)),
+                light-dark(var(--button-light), var(--button-dark));
+  }
+  .face-shine {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    border-radius: 3em;
+  }
+  .face-shine-shadow {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    mask: conic-gradient(from 0deg, #fff 90deg, #0000 110deg 200deg, #fff 215deg 280deg, #0000 315deg);
+    box-shadow: 0.075em 0 0.025em -0.025em hsl(0 0% 0% / 0.5) inset,
+                -0.075em -0.05em 0.025em -0.025em hsl(0 0% 0% / 0.5) inset;
+  }
+
+  .face-shine::before {
+    content: '';
+    position: absolute;
+    inset: 0.05em;
+    border-radius: 3em;
+    box-shadow: 0 -0.05em 0.025em -0.025em hsl(0 0% 50% / 0.5) inset,
+                -0.025em 0.05em 0.025em -0.025em hsl(0 0% 100% / 0.5) inset;
+  }
+  .face-shine::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: conic-gradient(from 45deg, #0000, hsl(0 0% 100% / 0.25));
+    border-radius: 3em;
+  }
+
+  /* ===== Icon switching (Moon / Sun) ===== */
+  .face svg.icon {
+    width: 28%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    overflow: visible !important;
+    transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s;
+  }
+
+  /* Dark mode → فقط ماه */
+  .face svg.moon {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+    pointer-events: none;
+  }
+  .face svg.sun {
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.5);
+    pointer-events: none;
+  }
+
+  /* Light mode → فقط خورشید */
+  .toggle[aria-pressed="true"] .face svg.moon {
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.5);
+  }
+  .toggle[aria-pressed="true"] .face svg.sun {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+  }
+
+  .face svg path {
+    transform-box: fill-box;
+    transform-origin: center center;
+  }
+
+  /* رنگ ماه (آبی) */
+  .moon.glow {
+    z-index: 3;
+    --glow: hsl(182 90% 92%);
+    filter: drop-shadow(0 0 0.2em var(--glow));
+  }
+  .moon .glow-path {
+    fill: var(--glow);
+    stroke: var(--glow);
+  }
+  .moon .inner-face {
+    fill: hsl(230 5% 80%);
+  }
+
+  /* رنگ خورشید (زرد پررنگ و گرم) */
+  .sun.glow {
+    z-index: 3;
+    --glow: hsl(45 100% 60%);
+    filter: drop-shadow(0 0 0.3em var(--glow));
+  }
+  .sun .glow-path {
+    fill: var(--glow);
+    stroke: var(--glow);
+  }
+  .sun .inner-face {
+    fill: hsl(48 100% 55%);
+  }
+  .sun .inner-bg {
+    fill: hsl(42 100% 45%) !important;
+  }
+  .sun .outline {
+    stroke: hsl(40 100% 45%) !important;
+  }
+  .sun .outline-shadow {
+    stroke: hsl(35 90% 35%) !important;
+  }
+  .sun .trail {
+    stroke: #FFB347 !important;
+  }
+
+  .trail-holder {
+    z-index: 2;
+    filter: blur(10px);
+  }
+  .trail-holder .trail {
+    stroke-width: 3.5;
+  }
+}
+
+@layer base {
+  :root {
+    --font-size-min: 16;
+    --font-size-max: 20;
+    --font-ratio-min: 1.2;
+    --font-ratio-max: 1.33;
+    --font-width-min: 375;
+    --font-width-max: 1500;
+  }
+
+  html {
+    --line: light-dark(hsl(0 0% 10% / 0.3), hsl(0 0% 100% / 0.3));
+    color-scheme: light dark;
+  }
+
+  [data-theme='light'] {
+    --line: hsl(0 0% 10% / 0.3);
+    color-scheme: light only;
+  }
+
+  [data-theme='dark'] {
+    --line: hsl(0 0% 100% / 0.3);
+    color-scheme: dark only;
+  }
+
+  *,
+  *:after,
+  *:before {
+    box-sizing: border-box;
+  }
+
+  body {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    font-family: 'SF Pro Text', 'SF Pro Icons', 'AOS Icons', 'Helvetica Neue',
+      Helvetica, Arial, sans-serif, system-ui;
+  }
+
+  body::before {
+    --size: 45px;
+    content: '';
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    background: linear-gradient(90deg, var(--line) 1px, transparent 1px var(--size)) 50% 50% / var(--size) var(--size),
+                linear-gradient(var(--line) 1px, transparent 1px var(--size)) 50% 50% / var(--size) var(--size);
+    mask: linear-gradient(-20deg, transparent 64%, white);
+    top: 0;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}
